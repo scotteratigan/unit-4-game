@@ -5,11 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>RPG</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- todo: add reset or bootstrap here -->
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
-    
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <!-- todo: swap out above for minified link when finished coding -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+
+    <!-- https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss -->
+    <!-- All images by darksouls1 https://pixabay.com/en/users/darksouls1-2189876/ -->
 </head>
 <body>
+    <h1>FANTASY RPG</h1>
+    <button id="start-game">START GAME</button>
+    <div id="initial-character-selection"></div>
+    <h3>Your Character:</h3>
+    <div id="defender-selection">
+    <h3>Enemies Available To Attack:</h3>
+    </div>
+    <div id="defender-area"></div>
+    <div id="fight-text"></div>
+    <div id="graveyard"></div>
     <script src="assets/javascript/game.js"></script>
 </body>
 </html>

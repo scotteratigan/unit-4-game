@@ -74,28 +74,63 @@
 						</div>
 				</div>
 				<div id="graveyard">
+                    <h3>Graveyard</h3>
 				</div>
 		</div>
 
-		<!-- Modal -->
-        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#you-won-modal">
-            Launch demo modal
-        </button> -->
+		<!-- Win Modal -->
+        <!-- <button type="button" class="btn btn-primary" id="you-won-button" data-toggle="modal" data-target="#you-won-modal" style="visibility: hidden;"></button>
 		<div class="modal fade" id="you-won-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
+				<div class="modal-content bg-white text-primary">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Game Over</h5>
+						<h5 class="modal-title" id="game-won-title">Game Over</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body text-center">
 			             You have WON!
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
+
+        <!-- Loss Modal -->
+        <!-- <button type="button" class="btn btn-primary" id="you-lost-button" data-toggle="modal" data-target="#you-lost-modal" style="visibility: hidden;"></button>
+        <div class="modal fade" id="you-lost-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-white text-primary">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="game-lost-title">Game Over</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center" id="game-over-text">
+                         You have LOST!
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Loss Modal -->
+        <button type="button" class="btn btn-primary" id="game-over-button" data-toggle="modal" data-target="#game-over-modal" style="visibility: hidden;"></button>
+        <div class="modal fade" id="game-over-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content bg-white text-primary">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="game-lost-title">Game Over</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center" id="game-over-text">
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

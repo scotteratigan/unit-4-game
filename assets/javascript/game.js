@@ -1,15 +1,12 @@
 // Create the mobs now in order to lock in their random names.
-var femaleDruid = new Mob("Druid", "female", 30, 2, 5, "female-druid.png");
-var femaleMage = new Mob("Mage", "female", 38, 1, 3, "female-mage.png");
-var maleWarrior = new Mob("Warrior", "male", 23, 3, 4, "male-warrior.png");
-var maleZombie = new Mob("Zombie", "male", 25, 3, 2, "male-zombie.png");
+var femaleDruid = new Mob("Druid", "female", 30, 2, 5, "crescent blade", "female-druid.png"); // fight fourth
+var femaleMage = new Mob("Mage", "female", 38, 2, 3, "fire magic", "female-mage.png"); // fight second
+var maleWarrior = new Mob("Warrior", "male", 23, 3, 4, "double-bladed sword", "male-warrior.png"); // fight third
+var maleZombie = new Mob("Zombie", "male", 25, 3, 2, "wretched fingers", "male-zombie.png"); // fight first
 var mobList = [femaleDruid, femaleMage, maleWarrior, maleZombie];
 var playerMob, enemyMob;
 
-// Not in use yet.
-var bodyLocations = ["head", "neck", "arm", "chest", "leg"];
-
-function Mob(mobType, sex, healthPoints, attackPower, counterAttackPower, imageLocation) { // Constructor function for mobs.
+function Mob(mobType, sex, healthPoints, attackPower, counterAttackPower, weapon, imageLocation) { // Constructor function for mobs.
 	// Uppercase function name is the convention for constructor functions.
 	// Note: all mobs have a random name. This name is selected on page load, so multiple playthroughs aren't confusing
 	// The mob.type is specified when the mob is constructed.
@@ -24,14 +21,17 @@ function Mob(mobType, sex, healthPoints, attackPower, counterAttackPower, imageL
 	this.imageLocation = imageLocation;
 	this.mobType = mobType;
 	this.isPlayerMob = false;
+	this.weapon = weapon;
 	this.uniqueId = sex + mobType;
 	this.sex = sex;
 	switch (sex) {
 		case "male":
 			this.name = maleNamesList[Math.floor(Math.random() * maleNamesList.length)];
+			this.posessivePronoun = "his";
 			break;
 		case "female":
 			this.name = femaleNamesList[Math.floor(Math.random() * femaleNamesList.length)];
+			this.posessivePronoun = "her";
 			break;
 	}
 	this.createLargeImageElement = function() {
@@ -128,25 +128,43 @@ function playerSelectsEnemy() {
 	$("#player-area").append(playerMob.createSmallImageElement());
 	$("#enemy-area").append(`<h5>Your enemy is ${enemyMob.name} a ${enemyMob.sex} ${enemyMob.mobType}.</h5>`);
 	$("#enemy-area").append(enemyMob.createSmallImageElement());
+	displayHitPoints();
 	$("#player-attacks").click(playerAttacks);
 }
 
+function getRandomBodyLocation() {
+	let bodyLocations = ["head", "neck", "arm", "chest", "leg"];
+	return bodyLocations[Math.floor(Math.random() * bodyLocations.length)];
+}
+
+function getDamageDescription(damageAmount) {
+	let damageText = ["a harmless", "an insignificant", "a negligible", "a light", "a good", "a harmful", "a very harmful", "a damaging", "a very damaging", "a severe", "a very severe", "a massive", "a devastating", "a very devastating", "an apocalyptic"];
+	if (damageAmount > damageText.length) {
+		return damageText[damageText.length - 1];
+	}
+	else {
+		return damageText[damageAmount];
+	}
+}
+
 function playerAttacks() {
-	//$("#fight-results-area").html("<p>You attack!</p>");
-	let attackText = `<p>You attack for ${playerMob.currentAttackPower} damage.</p>`;
+	let attackText = `<p>You attack ${enemyMob.name} with your ${playerMob.weapon}, landing ${getDamageDescription(playerMob.currentAttackPower)} hit to ${enemyMob.posessivePronoun} ${getRandomBodyLocation()} for ${playerMob.currentAttackPower} damage.</p>`;
 	enemyMob.currentHealthPoints -= playerMob.currentAttackPower;
 	if (enemyMob.currentHealthPoints < 0) {
 		enemyMob.currentHealthPoints = 0;
 	}
-	$("#enemy-hp").text("HP: " + enemyMob.currentHealthPoints + " / " + enemyMob.baseHealthPoints);
+	// $("#enemy-hp").text("HP: " + enemyMob.currentHealthPoints + " / " + enemyMob.baseHealthPoints);
+	displayHitPoints();
 	if (enemyMob.currentHealthPoints > 0) {
 		console.log("enemyMob.currentHealthPoints === " + enemyMob.currentHealthPoints);
-		attackText += "<p>Your enemy attacks back for " + enemyMob.counterAttackPower + " damage.</p>";
+		//attackText += "<p>Your enemy attacks back for " + enemyMob.counterAttackPower + " damage.</p>";
+		attackText += `<p>${enemyMob.name} attacks back with ${enemyMob.posessivePronoun} ${enemyMob.weapon}, landing landing ${getDamageDescription(enemyMob.currentAttackPower)}  hit to your ${getRandomBodyLocation()} for ${enemyMob.counterAttackPower} damage.</p>`;
 		playerMob.currentHealthPoints -= enemyMob.counterAttackPower;
 		if (playerMob.currentHealthPoints < 0) {
 			playerMob.currentHealthPoints = 0;
 		}
-		$("#player-hp").text("HP: " + playerMob.currentHealthPoints + " / " + playerMob.baseHealthPoints);
+		// $("#player-hp").text("HP: " + playerMob.currentHealthPoints + " / " + playerMob.baseHealthPoints);
+		displayHitPoints();
 		$("#fight-results-area").html(attackText);
 	}
 	else if (playerMob.currentHealthPoints > 0) {
@@ -166,6 +184,11 @@ function playerAttacks() {
 	}
 }
 
+function displayHitPoints() {
+	$("#enemy-hp").text("HP: " + enemyMob.currentHealthPoints + " / " + enemyMob.baseHealthPoints);
+	$("#player-hp").text("HP: " + playerMob.currentHealthPoints + " / " + playerMob.baseHealthPoints);
+}
+
 function playerDefeatsEnemy() {
 	emptyFightArea();
 	console.log("You have won!"); // todo: replace with modal here.
@@ -183,15 +206,16 @@ function playerDefeatsEnemy() {
 }
 
 function playerDefeatedAllEnemies() {
-	alert("WOW YOU KILLED EVERYBODY");
+	$("#game-over-text").text("You have WON!");
+	$("#game-over-button").click();
 	showStartButton();
 }
 
 function gameOver() {
 	emptyFightArea();
-	alert("You died. RIP.");
+	$("#game-over-text").text("You have LOST!");
+	$("#game-over-button").click();
 	showStartButton();
-
 }
 
 function emptyFightArea() {

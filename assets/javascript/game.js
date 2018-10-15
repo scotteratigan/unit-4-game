@@ -1,15 +1,13 @@
 // Create the mobs now in order to lock in their random names.
 var femaleDruid = new Mob("Druid", "female", 30, 2, 5, "crescent blade", "female-druid.png"); // fight fourth
 var femaleMage = new Mob("Mage", "female", 38, 2, 3, "fire magic", "female-mage.png"); // fight second
-var maleWarrior = new Mob("Warrior", "male", 23, 3, 4, "double-bladed sword", "male-warrior.png"); // fight third
+var maleWarrior = new Mob("Warrior", "male", 21, 3, 4, "double-bladed sword", "male-warrior.png"); // fight third
 var maleZombie = new Mob("Zombie", "male", 25, 3, 2, "wretched fingers", "male-zombie.png"); // fight first
 var mobList = [femaleDruid, femaleMage, maleWarrior, maleZombie];
 var playerMob, enemyMob;
 
 function Mob(mobType, sex, healthPoints, attackPower, counterAttackPower, weapon, imageLocation) { // Constructor function for mobs.
-	// Uppercase function name is the convention for constructor functions.
-	// Note: all mobs have a random name. This name is selected on page load, so multiple playthroughs aren't confusing
-	// The mob.type is specified when the mob is constructed.
+	// Note: all mobs have a random name. This name is selected on page load, so multiple playthroughs aren't confusing. The random name selection depends on the sex of the mob entity.
 	let maleNamesList = ["Sewell the Rat", "Chase the Punk", "Stanwick Shades", "Chevy Angel Eyes", "Grady the Greedy", "Pegleg Vance", "Greedy Felix", "Phantom Harv", "Wilfred the Pillager", "Terrance the Heister", "Miller the Mad", "Cleve Greed", "Dwite Black Eyes", "Blue Eyed Brayden", "Mad Hat Emmerson", "Brute Brayton", "Nightmare Catcher", "Greedy Bray", "Gavin Mad Eye", "Denton the Rogue", "Duncan the Knuckles", "Marden Mad Dog", "Jean the Lucky", "Smirking Studs", "Whispering Reinwald", "Pegleg Sullivan", "Toothless Warren", "Eccentric Scot", "Kevin the Thug", "Speck the Mumbler", "Ossie the Punk", "Waverly the Con", "Grayson the Greedy", "Two Face Bran", "Five Fingered Frankie", "Toothless Riobard", "Numbers Noel"];
 	let femaleNamesList = ["Sydnie Blackjack", "Vala the Menace", "Dorothy Three Toes", "Christa the Ravager", "Shirl Black Eyes", "Lunatic Allyson", "Toothless Abagail", "Whispering Jasmyn", "Eyepatch Maegan", "Four Fingered Simone", "Izabella the Eccentric", "Nia Shades", "Anita the Ravager", "Dasia Toothless", "Brittney the Danger", "Diamond Callie", "Brute Lydia", "Wild Cristal", "Spider Mariam", "Amy Crazy Eyes", "Bryanna Coins", "Holly the Phantom", "Madelynn the Bandit", "Aubrey Blue Eyes", "Mad Eyed Loella", "Greedy Jaylynn", "Eyepatch Charlotte", "Dangerous Locke", "Serpent Piper", "Esther Phantom", "Alison the Wild", "Reese the Fang", "Alisa Phantom", "Destini the Cheat", "Dangerous Abbie", "Smirking Colleen", "Sly Kya", "Rusty Bobbie", "Cheating Alicia"]
 	// Names courtesy of https://www.fantasynamegenerators.com/bandit-names.php
@@ -41,18 +39,17 @@ function Mob(mobType, sex, healthPoints, attackPower, counterAttackPower, weapon
         return `<img src="assets/images/${this.imageLocation}" alt="${this.sex} ${this.mobType}" style="width: 150px; height: 310px;">`;
     };
     this.createPlayerMobElement = function() {
-    	// todo: figure out why these aren't centered
     	return `<div id='${this.uniqueId}' class='col-2 select-character text-center'>${this.createSmallImageElement()}</div>`;
     };
-    	// todo: figure out why these aren't centered
     this.createEnemySelectionElement = function() {
     	return `<div id='${this.uniqueId}' class='col-2 select-enemy text-center'>${this.createSmallImageElement()}</div>`;
     };
 }
 
 function startNewGame() { // Begins a new game.
-	//$(this).css("visibility", "hidden"); // z-index didn't work for me, even when I made the position of the element relative. Maybe can't go under body?
-	$("#start-game").empty(); // remove the start game button
+	$("#start-game").empty(); // Remove the start game button.
+	$("#graveyard").html("<h3>Graveyard</h3>");
+	$("#graveyard").css("visibility", "hidden");
 	$("#character-selection-header").html("<h2>Select your character:</h2>");
 	mobList.forEach(function(thisMob) { // Reset attack power and health points at beginning of game.
 		thisMob.currentHealthPoints = thisMob.baseHealthPoints;
@@ -85,12 +82,10 @@ function playerSelectsCharacter() {
 			playerMob = maleZombie;
 			break;
 	}
-	console.log("You have selected", playerMob.name);
 	setupEnemySelection();
 }
 
 function setupEnemySelection() {
-	console.log("Choose enemy now.");
 	$("#enemy-selection-header").html("<h2>Select your opponent:</h2>");
 	let enemyMobs = 0;
 	mobList.forEach(function(thisMob) { // Reset attack power and health points at beginning of game.
@@ -102,7 +97,6 @@ function setupEnemySelection() {
 }
 
 function playerSelectsEnemy() {
-	console.log("You will fight", this.id);
 	$("#enemy-selection-header").empty();
 	$("#enemy-selection").empty();
 	switch (this.id) {
@@ -153,17 +147,13 @@ function playerAttacks() {
 	if (enemyMob.currentHealthPoints < 0) {
 		enemyMob.currentHealthPoints = 0;
 	}
-	// $("#enemy-hp").text("HP: " + enemyMob.currentHealthPoints + " / " + enemyMob.baseHealthPoints);
 	displayHitPoints();
 	if (enemyMob.currentHealthPoints > 0) {
-		console.log("enemyMob.currentHealthPoints === " + enemyMob.currentHealthPoints);
-		//attackText += "<p>Your enemy attacks back for " + enemyMob.counterAttackPower + " damage.</p>";
 		attackText += `<p>${enemyMob.name} attacks back with ${enemyMob.posessivePronoun} ${enemyMob.weapon}, landing landing ${getDamageDescription(enemyMob.currentAttackPower)}  hit to your ${getRandomBodyLocation()} for ${enemyMob.counterAttackPower} damage.</p>`;
 		playerMob.currentHealthPoints -= enemyMob.counterAttackPower;
 		if (playerMob.currentHealthPoints < 0) {
 			playerMob.currentHealthPoints = 0;
 		}
-		// $("#player-hp").text("HP: " + playerMob.currentHealthPoints + " / " + playerMob.baseHealthPoints);
 		displayHitPoints();
 		$("#fight-results-area").html(attackText);
 	}
@@ -179,7 +169,7 @@ function playerAttacks() {
 	else {
 		attackText += "<p>Unfortunately, your enemy has also slain you. RIP.</p>";
 		$("#fight-results-area").html(attackText);
-		gameOver();
+		gameLost();
 		return;
 	}
 }
@@ -191,7 +181,11 @@ function displayHitPoints() {
 
 function playerDefeatsEnemy() {
 	emptyFightArea();
-	console.log("You have won!"); // todo: replace with modal here.
+	$("#alert-modal-title").text("Victory.");
+	$("#alert-modal-text").text(`You have defeated ${enemyMob.name}.`);
+	$("#alert-button").click();
+	$("#graveyard").css("visibility", "visible");
+	$("#graveyard").append(enemyMob.createSmallImageElement());
 	let enemiesRemaining = 0
 	mobList.forEach(function(thisMob) {
 		if (thisMob.currentHealthPoints > 0 && !thisMob.isPlayerMob)
@@ -206,15 +200,19 @@ function playerDefeatsEnemy() {
 }
 
 function playerDefeatedAllEnemies() {
-	$("#game-over-text").text("You have WON!");
-	$("#game-over-button").click();
+	$("#alert-modal-title").text("You are the champion!");
+	$("#alert-modal-text").html(`<p>${playerMob.name} the ${playerMob.mobType} has successfully defeated all challengers, and stands victorious. Legends of this victory will be passed on for generations to come!</p>`);
+	$("#alert-modal-text").append(playerMob.createLargeImageElement());
+	$("#alert-button").click();
 	showStartButton();
 }
 
-function gameOver() {
+function gameLost() {
 	emptyFightArea();
-	$("#game-over-text").text("You have LOST!");
-	$("#game-over-button").click();
+	$("#alert-modal-title").text("You were defeated.");
+	$("#alert-modal-text").html(`<p>${playerMob.name} was struck down by ${enemyMob.name} the ${enemyMob.mobType}, and your battles will soon be forgotten. ${enemyMob.name} gloats over your lifeless corpse.<p>`);
+	$("#alert-modal-text").append(enemyMob.createLargeImageElement());
+	$("#alert-button").click();
 	showStartButton();
 }
 
@@ -228,7 +226,6 @@ function emptyFightArea() {
 }
 
 function showStartButton() {
-	// test
 	$("#start-game").html('<button id="start game" class="btn-primary">START GAME</button>');
 }
 

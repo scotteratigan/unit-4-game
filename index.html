@@ -5,15 +5,8 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>RPG</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-	 <!--	<link rel="stylesheet" type="text/css" href="assets/css/reset.css"> -->
-		<!-- <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet"> -->
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-		<!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
 		<link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
-		<!-- todo: swap out above for minified link when finished coding -->
-		<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
-		<!-- https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss -->
-		<!-- All images by darksouls1 https://pixabay.com/en/users/darksouls1-2189876/ -->
 </head>
 <body>
 	<header>
@@ -22,7 +15,7 @@
 		</div>
 	</header>
     <main>
-		<div class="container mt-5">
+		<div class="container mt-5 pt-5">
 				<div class="row mt-5">
 						<div class="col-2 offset-5" id="start-game">
 						</div>
@@ -50,7 +43,7 @@
 				<div class="row"> <!-- fight area -->
 						<div class="col-4 offset-2"> <!-- player area -->
 								<div class="row">
-										<div class="col" id="player-area">				
+										<div class="col text-center" id="player-area">				
 										</div>
 								</div>
 								<div class="row">
@@ -60,7 +53,7 @@
 						</div>
 						<div class="col-4 bg-red"> <!-- enemy area -->
 								<div class="row">
-										<div class="col" id="enemy-area">
+										<div class="col text-center" id="enemy-area">
 										</div>
 								</div>
 								<div class="row">
@@ -73,59 +66,23 @@
 						<div class="col text-center" id="fight-results-area">
 						</div>
 				</div>
-				<div id="graveyard">
+				<div id="graveyard" style="visibility: hidden;">
                     <h3>Graveyard</h3>
 				</div>
 		</div>
 
-		<!-- Win Modal -->
-        <!-- <button type="button" class="btn btn-primary" id="you-won-button" data-toggle="modal" data-target="#you-won-modal" style="visibility: hidden;"></button>
-		<div class="modal fade" id="you-won-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content bg-white text-primary">
-					<div class="modal-header">
-						<h5 class="modal-title" id="game-won-title">Game Over</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body text-center">
-			             You have WON!
-					</div>
-				</div>
-			</div>
-		</div> -->
-
-        <!-- Loss Modal -->
-        <!-- <button type="button" class="btn btn-primary" id="you-lost-button" data-toggle="modal" data-target="#you-lost-modal" style="visibility: hidden;"></button>
-        <div class="modal fade" id="you-lost-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <!-- Alert Modal -->
+        <button type="button" class="btn btn-primary" id="alert-button" data-toggle="modal" data-target="#alert-modal" style="visibility: hidden;"></button>
+        <div class="modal fade" tabindex="-1" role="dialog" id="alert-modal" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-white text-primary">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="game-lost-title">Game Over</h5>
+                        <h5 class="modal-title" id="alert-modal-title"></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body text-center" id="game-over-text">
-                         You have LOST!
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
-        <!-- Loss Modal -->
-        <button type="button" class="btn btn-primary" id="game-over-button" data-toggle="modal" data-target="#game-over-modal" style="visibility: hidden;"></button>
-        <div class="modal fade" id="game-over-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content bg-white text-primary">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="game-lost-title">Game Over</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body text-center" id="game-over-text">
+                    <div class="modal-body text-center" id="alert-modal-text">
                     </div>
                 </div>
             </div>

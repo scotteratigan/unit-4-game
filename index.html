@@ -1,97 +1,97 @@
 <!DOCTYPE html>
-<html>
-<head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<title>RPG</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-		<link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
-</head>
-<body>
-	<header>
-		<div class="mb-5 pb-5">
-			<h1>FANTASY RPG</h1>
-		</div>
-	</header>
-    <main>
-		<div class="container mt-5 pt-5">
+<html lang="en">
+	<head>
+			<meta charset="utf-8" />
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<title>RPG</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+			<link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+			<link rel="shortcut icon" href="assets/images/favicon.ico" /> <!-- favicon courtesy of www.freefavicon.com -->
+	</head>
+	<body>
+		<header>
+			<div class="mb-5 pb-5">
+				<h1>FANTASY RPG</h1>
+			</div>
+		</header>
+		<main>
+			<div class="container mt-5 pt-5">
 				<div class="row mt-5">
-						<div class="col-2 offset-5" id="start-game">
-						</div>
+					<div class="col-2 offset-5" id="start-game">
+					</div>
 				</div>
 				<div class="row">
-						<div class="col-8 offset-2">
-								<div class="row" id="character-selection-header">
-								</div>
-								<div class="row" id="character-selection">
-								</div>
+					<div class="col-8 offset-2">
+						<div class="row" id="character-selection-header">
 						</div>
+						<div class="row" id="character-selection">
+						</div>
+					</div>
 				</div>
 				<div class="row">
-						<div class="col-8 offset-2">
-								<div class="row" id="enemy-selection-header">
-								</div>
-								<div class="row" id="enemy-selection">
-								</div>
+					<div class="col-8 offset-2">
+						<div class="row" id="enemy-selection-header">
 						</div>
+						<div class="row" id="enemy-selection">
+						</div>
+					</div>
 				</div>
 				<div class="row">
-						<div class="col-2 text-center offset-5" id="fight-button-div">
-						</div>
+					<div class="col-2 text-center offset-5" id="fight-button-div">
+					</div>
 				</div>
 				<div class="row"> <!-- fight area -->
-						<div class="col-4 offset-2"> <!-- player area -->
-								<div class="row">
-										<div class="col text-center" id="player-area">				
-										</div>
-								</div>
-								<div class="row">
-										<div class="col text-center" id="player-hp">
-										</div>
-								</div>
+					<div class="col-4 offset-2"> <!-- player area -->
+						<div class="row">
+							<div class="col text-center" id="player-area">				
+							</div>
 						</div>
-						<div class="col-4 bg-red"> <!-- enemy area -->
-								<div class="row">
-										<div class="col text-center" id="enemy-area">
-										</div>
-								</div>
-								<div class="row">
-										<div class="col text-center" id="enemy-hp">
-										</div>
-								</div>
+						<div class="row">
+							<div class="col text-center" id="player-hp">
+							</div>
 						</div>
+					</div>
+					<div class="col-4 bg-red"> <!-- enemy area -->
+						<div class="row">
+							<div class="col text-center" id="enemy-area">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col text-center" id="enemy-hp">
+							</div>
+						</div>
+					</div>
 				</div> <!-- /fight area -->
 				<div class="row">
-						<div class="col text-center" id="fight-results-area">
-						</div>
+					<div class="col text-center" id="fight-results-area">
+					</div>
 				</div>
 				<div id="graveyard" style="visibility: hidden;">
-                    <h3>Graveyard</h3>
 				</div>
-		</div>
+			</div>
 
-        <!-- Alert Modal -->
-        <button type="button" class="btn btn-primary" id="alert-button" data-toggle="modal" data-target="#alert-modal" style="visibility: hidden;"></button>
-        <div class="modal fade" tabindex="-1" role="dialog" id="alert-modal" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content bg-white text-primary">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="alert-modal-title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body text-center" id="alert-modal-text">
-                    </div>
-                </div>
-            </div>
-        </div>
+			<!-- Alert Modal -->
+			<button type="button" class="btn btn-primary" id="alert-button" data-toggle="modal" data-target="#alert-modal" style="visibility: hidden;"></button>
+			<div class="modal fade" tabindex="-1" role="dialog" id="alert-modal" aria-labelledby="alert-modal-title" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content bg-white text-primary">
+						<div class="modal-header">
+							<h5 class="modal-title" id="alert-modal-title">Alert</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body text-center" id="alert-modal-text">
+						</div>
+					</div>
+				</div>
+			</div>
 
-    </main>
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<script src="assets/javascript/game.js"></script>
-</body>
+			</main>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<script src="assets/javascript/game.js"></script>
+	</body>
 </html>

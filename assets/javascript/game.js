@@ -1,8 +1,11 @@
 // Create the mobs now in order to lock in their random names.
-var femaleDruid = new Mob("Druid", "female", 30, 2, 5, "crescent blade", "female-druid.png"); // fight fourth
-var femaleMage = new Mob("Mage", "female", 38, 2, 3, "fire magic", "female-mage.png"); // fight second
-var maleWarrior = new Mob("Warrior", "male", 21, 3, 4, "double-bladed sword", "male-warrior.png"); // fight third
-var maleZombie = new Mob("Zombie", "male", 25, 3, 2, "wretched fingers", "male-zombie.png"); // fight first
+var femaleDruid = new Mob("Druid", "female", 29, 2, 2, "crescent blade", "female-druid.png");
+var femaleMage = new Mob("Mage", "female", 17, 4, 3, "fire magic", "female-mage.png");
+var maleWarrior = new Mob("Warrior", "male", 19, 3, 4, "double-bladed sword", "male-warrior.png");
+var maleZombie = new Mob("Zombie", "male", 13, 5, 6, "wretched fingers", "male-zombie.png");
+// For easy testing:
+// Loss order: zombie, warrior, mage, druid
+// Win order: druid, mage, warrior, zombie
 var mobList = [femaleDruid, femaleMage, maleWarrior, maleZombie];
 var playerMob, enemyMob;
 
@@ -46,102 +49,37 @@ function Mob(mobType, sex, healthPoints, attackPower, counterAttackPower, weapon
     };
 }
 
-function startNewGame() { // Begins a new game.
-	$("#start-game").empty(); // Remove the start game button.
-	$("#graveyard").html("<h3>Graveyard</h3>");
-	$("#graveyard").css("visibility", "hidden");
-	$("#character-selection-header").html("<h2>Select your character:</h2>");
-	mobList.forEach(function(thisMob) { // Reset attack power and health points at beginning of game.
-		thisMob.currentHealthPoints = thisMob.baseHealthPoints;
-		thisMob.currentAttackPower = thisMob.baseAttackPower;
-		thisMob.isPlayerMob = false;
-		thisMob.isEnemyMob = false;
-		$("#character-selection").append(thisMob.createPlayerMobElement());
-	});
-	$(".select-character").click(playerSelectsCharacter); // Can't load this until after the divs are created.
+function displayHitPoints() {
+	$("#enemy-hp").text("HP: " + enemyMob.currentHealthPoints + " / " + enemyMob.baseHealthPoints);
+	$("#player-hp").text("HP: " + playerMob.currentHealthPoints + " / " + playerMob.baseHealthPoints);
 }
 
-function playerSelectsCharacter() {
-	$("#character-selection-header").empty();
-	$("#character-selection").empty();
-	switch (this.id) {
-		case "femaleDruid":
-			femaleDruid.isPlayerMob = true;
-			playerMob = femaleDruid;
-			break;
-		case "femaleMage":
-			femaleMage.isPlayerMob = true;
-			playerMob = femaleMage;
-			break;
-		case "maleWarrior":
-			maleWarrior.isPlayerMob = true;
-			playerMob = maleWarrior;
-			break;
-		case "maleZombie":
-			maleZombie.isPlayerMob = true;
-			playerMob = maleZombie;
-			break;
-	}
-	setupEnemySelection();
-}
-
-function setupEnemySelection() {
-	$("#enemy-selection-header").html("<h2>Select your opponent:</h2>");
-	let enemyMobs = 0;
-	mobList.forEach(function(thisMob) { // Reset attack power and health points at beginning of game.
-		if (!thisMob.isPlayerMob && thisMob.currentHealthPoints > 0) {
-			$("#enemy-selection").append(thisMob.createEnemySelectionElement());
-		}
-	});
-	$(".select-enemy").click(playerSelectsEnemy); // Can't load this until after the divs are created.
-}
-
-function playerSelectsEnemy() {
-	$("#enemy-selection-header").empty();
-	$("#enemy-selection").empty();
-	switch (this.id) {
-		case "femaleDruid":
-			femaleDruid.isEnemyMob = true;
-			enemyMob = femaleDruid;
-			break;
-		case "femaleMage":
-			femaleMage.isEnemyMob = true;
-			enemyMob = femaleMage;
-			break;
-		case "maleWarrior":
-			maleWarrior.isEnemyMob = true;
-			enemyMob = maleWarrior;
-			break;
-		case "maleZombie":
-			maleZombie.isEnemyMob = true;
-			enemyMob = maleZombie;
-			break;
-	}
-	$("#fight-button-div").html('<button class="btn-primary" id="player-attacks">ATTACK ENEMY</button>');
-	$("#player-area").append(`<h5>You are ${playerMob.name} a ${playerMob.sex} ${playerMob.mobType}.</h5>`);
-	$("#player-area").append(playerMob.createSmallImageElement());
-	$("#enemy-area").append(`<h5>Your enemy is ${enemyMob.name} a ${enemyMob.sex} ${enemyMob.mobType}.</h5>`);
-	$("#enemy-area").append(enemyMob.createSmallImageElement());
-	displayHitPoints();
-	$("#player-attacks").click(playerAttacks);
-}
-
-function getRandomBodyLocation() {
-	let bodyLocations = ["head", "neck", "arm", "chest", "leg"];
-	return bodyLocations[Math.floor(Math.random() * bodyLocations.length)];
-}
-
-function getDamageDescription(damageAmount) {
-	let damageText = ["a harmless", "an insignificant", "a negligible", "a light", "a good", "a harmful", "a very harmful", "a damaging", "a very damaging", "a severe", "a very severe", "a massive", "a devastating", "a very devastating", "an apocalyptic"];
-	if (damageAmount > damageText.length) {
-		return damageText[damageText.length - 1];
-	}
-	else {
-		return damageText[damageAmount];
-	}
+function emptyFightArea() {
+	$("#fight-button-div").empty();
+	$("#player-area").empty();
+	$("#player-hp").empty();
+	$("#enemy-area").empty();
+	$("#enemy-hp").empty();
+	$("#fight-results-area").empty();
 }
 
 function playerAttacks() {
+	// This function contains two sub-functions:
+	function getDamageDescription(damageAmount) {
+		let damageText = ["a harmless", "an insignificant", "a negligible", "a light", "a good", "a harmful", "a very harmful", "a damaging", "a very damaging", "a severe", "a very severe", "a massive", "a devastating", "a very devastating", "an apocalyptic"];
+		if (damageAmount > damageText.length) {
+			return damageText[damageText.length - 1];
+		}
+		else {
+			return damageText[damageAmount];
+		}
+	}
+
+	function getRandomBodyLocation() {
+		let bodyLocations = ["head", "neck", "arm", "chest", "leg"];
+		return bodyLocations[Math.floor(Math.random() * bodyLocations.length)];
+	}
+
 	let attackText = `<p>You attack ${enemyMob.name} with your ${playerMob.weapon}, landing ${getDamageDescription(playerMob.currentAttackPower)} hit to ${enemyMob.posessivePronoun} ${getRandomBodyLocation()} for ${playerMob.currentAttackPower} damage.</p>`;
 	enemyMob.currentHealthPoints -= playerMob.currentAttackPower;
 	if (enemyMob.currentHealthPoints < 0) {
@@ -169,14 +107,14 @@ function playerAttacks() {
 	else {
 		attackText += "<p>Unfortunately, your enemy has also slain you. RIP.</p>";
 		$("#fight-results-area").html(attackText);
-		gameLost();
-		return;
+		// Player has lost the game.
+		emptyFightArea();
+		$("#alert-modal-title").text("You were defeated.");
+		$("#alert-modal-text").html(`<p>${playerMob.name} was struck down by ${enemyMob.name} the ${enemyMob.mobType}, and your battles will soon be forgotten. ${enemyMob.name} gloats over your lifeless corpse.<p>`);
+		$("#alert-modal-text").append(enemyMob.createLargeImageElement());
+		$("#alert-button").click();
+		showStartButton();
 	}
-}
-
-function displayHitPoints() {
-	$("#enemy-hp").text("HP: " + enemyMob.currentHealthPoints + " / " + enemyMob.baseHealthPoints);
-	$("#player-hp").text("HP: " + playerMob.currentHealthPoints + " / " + playerMob.baseHealthPoints);
 }
 
 function playerDefeatsEnemy() {
@@ -195,38 +133,97 @@ function playerDefeatsEnemy() {
 		setupEnemySelection();
 	}
 	else {
-		playerDefeatedAllEnemies();
+		// Player has defeated all enemies.
+		$("#alert-modal-title").text("You are the champion!");
+		$("#alert-modal-text").html(`<p>${playerMob.name} the ${playerMob.mobType} has successfully defeated all challengers, and stands victorious. Legends of this victory will be passed on for generations to come!</p>`);
+		$("#alert-modal-text").append(playerMob.createLargeImageElement());
+		$("#alert-button").click();
+		showStartButton();
 	}
 }
 
-function playerDefeatedAllEnemies() {
-	$("#alert-modal-title").text("You are the champion!");
-	$("#alert-modal-text").html(`<p>${playerMob.name} the ${playerMob.mobType} has successfully defeated all challengers, and stands victorious. Legends of this victory will be passed on for generations to come!</p>`);
-	$("#alert-modal-text").append(playerMob.createLargeImageElement());
-	$("#alert-button").click();
-	showStartButton();
+function playerSelectsCharacter() {
+	$("#character-selection-header").empty();
+	$("#character-selection").empty();
+	switch (this.id) {
+		case "femaleDruid":
+			femaleDruid.isPlayerMob = true;
+			playerMob = femaleDruid;
+			break;
+		case "femaleMage":
+			femaleMage.isPlayerMob = true;
+			playerMob = femaleMage;
+			break;
+		case "maleWarrior":
+			maleWarrior.isPlayerMob = true;
+			playerMob = maleWarrior;
+			break;
+		case "maleZombie":
+			maleZombie.isPlayerMob = true;
+			playerMob = maleZombie;
+			break;
+	}
+	setupEnemySelection();
 }
 
-function gameLost() {
-	emptyFightArea();
-	$("#alert-modal-title").text("You were defeated.");
-	$("#alert-modal-text").html(`<p>${playerMob.name} was struck down by ${enemyMob.name} the ${enemyMob.mobType}, and your battles will soon be forgotten. ${enemyMob.name} gloats over your lifeless corpse.<p>`);
-	$("#alert-modal-text").append(enemyMob.createLargeImageElement());
-	$("#alert-button").click();
-	showStartButton();
-}
-
-function emptyFightArea() {
-	$("#fight-button-div").empty();
-	$("#player-area").empty();
-	$("#player-hp").empty();
-	$("#enemy-area").empty();
-	$("#enemy-hp").empty();
-	$("#fight-results-area").empty();
+function setupEnemySelection() {
+	// Contains 1 sub-function:
+	function playerSelectsEnemy() {
+		$("#enemy-selection-header").empty();
+		$("#enemy-selection").empty();
+		switch (this.id) {
+			case "femaleDruid":
+				femaleDruid.isEnemyMob = true;
+				enemyMob = femaleDruid;
+				break;
+			case "femaleMage":
+				femaleMage.isEnemyMob = true;
+				enemyMob = femaleMage;
+				break;
+			case "maleWarrior":
+				maleWarrior.isEnemyMob = true;
+				enemyMob = maleWarrior;
+				break;
+			case "maleZombie":
+				maleZombie.isEnemyMob = true;
+				enemyMob = maleZombie;
+				break;
+		}
+		$("#fight-button-div").html('<button class="btn-primary" id="player-attacks">ATTACK ENEMY</button>');
+		$("#player-area").append(`<h5>You are ${playerMob.name} a ${playerMob.sex} ${playerMob.mobType}.</h5>`);
+		$("#player-area").append(playerMob.createSmallImageElement());
+		$("#enemy-area").append(`<h5>Your enemy is ${enemyMob.name} a ${enemyMob.sex} ${enemyMob.mobType}.</h5>`);
+		$("#enemy-area").append(enemyMob.createSmallImageElement());
+		displayHitPoints();
+		$("#player-attacks").click(playerAttacks);
+	} // end of sub-function.
+	$("#enemy-selection-header").html("<h2>Select your opponent:</h2>");
+	let enemyMobs = 0;
+	mobList.forEach(function(thisMob) { // Reset attack power and health points at beginning of game.
+		if (!thisMob.isPlayerMob && thisMob.currentHealthPoints > 0) {
+			$("#enemy-selection").append(thisMob.createEnemySelectionElement());
+		}
+	});
+	$(".select-enemy").click(playerSelectsEnemy); // Can't load this until after the divs are created.
 }
 
 function showStartButton() {
 	$("#start-game").html('<button id="start game" class="btn-primary">START GAME</button>');
+}
+
+function startNewGame() { // Begins a new game.
+	$("#start-game").empty(); // Remove the start game button.
+	$("#graveyard").html("<h3>Graveyard</h3>");
+	$("#graveyard").css("visibility", "hidden");
+	$("#character-selection-header").html("<h2>Select your character:</h2>");
+	mobList.forEach(function(thisMob) { // Reset attack power and health points at beginning of game.
+		thisMob.currentHealthPoints = thisMob.baseHealthPoints;
+		thisMob.currentAttackPower = thisMob.baseAttackPower;
+		thisMob.isPlayerMob = false;
+		thisMob.isEnemyMob = false;
+		$("#character-selection").append(thisMob.createPlayerMobElement());
+	});
+	$(".select-character").click(playerSelectsCharacter); // Can't load this until after the divs are created.
 }
 
 $("#start-game").click(startNewGame);
